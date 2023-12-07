@@ -86,9 +86,56 @@ summary(model2)
 This tells us that K is 1.000e+09
 
 We can use this information to plot the models on the data:
+```
+
+growth_data <- read.csv("experiment2.csv")
+
+logistic_fun <- function(t) {
+  
+  N <- (N0*K*exp(r*t))/(K-N0+N0*exp(r*t))
+  
+  return(N)
+  
+}
+
+N0 <- exp(7.5907133)
+  
+r <- 0.029902
+  
+K <- 1.000e+09
+
+#Plot model
+ggplot(aes(t,N), data = growth_data) +
+  
+  geom_function(fun=logistic_fun, colour="red") +
+  
+  geom_point()+
+  
+  xlab("Time (min)")+
+  
+  ylab("N (# cells)")+
+  
+  theme_bw()
+```
 
 ![](plot_linear_model.png)
 
+```
+#Plot model on log scale
+ggplot(aes(t,N), data = growth_data) +
+  
+  geom_function(fun=logistic_fun, colour="red") +
+  
+  geom_point()+
+  
+  scale_y_continuous(trans='log10')+
+  
+  xlab("Time (min)")+
+  
+  ylab("Log10(N)")+
+  
+  theme_bw()
+```
 ![](log_plot_linear_model.png)
 
 # Question 2: Use estimates of N0 and r to calculate population size at t=4980 min, assuming that the population grows exponentially. How does it compare to the population size predicted under logistic growth?
@@ -116,7 +163,37 @@ Under the logistic growth models, the population size at t=4980 minutes has reac
 # Question 3: Graph comparing exponential and logistic growth curves:
 
 Using the same estimated growth rate and initial population size, I created the graphs below, showing both models' growth curves.
-
+```
+ggplot(growth_data, aes(t,N))+
+  geom_function(fun=logistic_fun, 
+                aes(colour="Logistic"))+
+  geom_function(fun=exponential_growth, 
+                aes(colour="Exponential"))+
+  scale_y_continuous(limits = c(7.5, 1e+15))+
+  scale_x_continuous(limits = c(0.1, 1000))+
+  scale_colour_manual(values = c("Logistic"="blue", "Exponential"="red"))+
+  xlab("Time (min)")+
+  ylab("N (# cells)")+
+  ggtitle("Comparison of Logistic and Exponential Growth Models")+
+  theme_bw()+
+  theme(plot.title = element_text(size = 10))
+```
 ![](Logistic_and_exponential_plot.png)
 
+```
+ggplot(growth_data, aes(t,N))+
+  geom_function(fun=logistic_fun, 
+                aes(colour="Logistic"))+
+  geom_function(fun=exponential_growth, 
+                aes(colour="Exponential"))+
+  scale_y_continuous(trans='log10', limits = c(7.5, 1e+15))+
+  scale_x_continuous(limits = c(0.1, 1000))+
+  scale_colour_manual(values = c("Logistic"="blue", "Exponential"="red"))+
+  xlab("Time (min)")+
+  ylab("Log10(N)")+
+  ggtitle("Comparison of Logistic and Exponential Growth Models (log scale)")+
+  theme_bw()+
+  theme(plot.title = element_text(size = 10))
+
+```
 ![](log_scale_logistic_and_exponential_plot.png)
