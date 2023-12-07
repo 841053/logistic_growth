@@ -1,5 +1,7 @@
 Logistic Growth Analysis
 
+# Question 1: Anotate the analysis
+
 Using data from *Escherichia coli* in growth media, I want to estimate three values:
 
 -   Initial population size: N0
@@ -11,12 +13,41 @@ Using data from *Escherichia coli* in growth media, I want to estimate three val
 To do this, I will first plot the data showing the number of cells over time.
 
 I used data: experiment2.csv
+```{r}
+growth_data <- read.csv("/cloud/project/LogisticGrowthProject/experiment2.csv")
 
+install.packages("ggplot2")
+library(ggplot2)
+
+ggplot(aes(t,N), data = growth_data) +
+  
+  geom_point() +
+  
+  xlab("Time (min)") +
+  
+  ylab("N (# cells)") +
+  
+  theme_bw()
+```
 [![](N_cells_over_Time.png)](/cloud/project/LogisticGrowthProject/N_cells_over_Time.png)
 
 This plot shows how the population grows exponentially until resources are depleted and the population reaches a carrying capacity(K) at 1.000e+09 cells.
 
 I can also show the data log transformed to show the linear growth:
+
+```{r}
+ggplot(aes(t,N), data = growth_data) +
+  
+  geom_point() +
+  
+  xlab("Time(min)") +
+  
+  ylab("Log10(N)") +
+  
+  scale_y_continuous(trans='log10')+
+  
+  theme_bw()
+```
 
 ![](Log_cells_over_time.png)
 
@@ -60,7 +91,7 @@ We can use this information to plot the models on the data:
 
 ![](log_plot_linear_model.png)
 
-Question 2: Use estimates of N0 and r to calculate population size at t=4980 min, assuming that the population grows exponentially. How does it compare to the population size predicted under logistic growth?
+# Question 2: Use estimates of N0 and r to calculate population size at t=4980 min, assuming that the population grows exponentially. How does it compare to the population size predicted under logistic growth?
 
 My estimates were N0= 7.59 and r=0.029
 
@@ -82,7 +113,7 @@ Population size at time 4980 minutes is
 
 Under the logistic growth models, the population size at t=4980 minutes has reached K, carrying capacity of 1.000e+09. Therefore, with exponential growth, the population has reached a much larger size than in logistic growth.
 
-Question 3: Graph comparing exponential and logistic growth curves:
+# Question 3: Graph comparing exponential and logistic growth curves:
 
 Using the same estimated growth rate and initial population size, I created the graphs below, showing both models' growth curves.
 
